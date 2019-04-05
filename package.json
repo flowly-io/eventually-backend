@@ -1,0 +1,26 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Hackathon 2019",
+  "main": "src/index.js",
+  "repository": "git@github.com:hackamon2019/backend.git",
+  "author": "Ben Yap <bwyap@outlook.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "./node_modules/.bin/babel src --out-dir build",
+    "develop": "./node_modules/.bin/babel-watch src/index.js",
+    "start": "node build/index.js"
+  },
+  "dependencies": {
+    "@babel/polyfill": "7.4.3",
+    "apollo-server": "2.4.8",
+    "graphql": "14.2.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "7.4.3",
+    "@babel/core": "7.4.3",
+    "@babel/preset-env": "7.4.3",
+    "babel-watch": "7.0.0"
+  }
+}
