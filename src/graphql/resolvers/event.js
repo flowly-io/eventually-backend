@@ -46,6 +46,12 @@ export default {
     },
     async deleteEvent(parent, args, ctx) {
       // Validate arguments
+
+      if (!args.eventId) throw new UserInputError("Event Id cannot be empty");
+      const result = await ctx.db
+        .collection("events")
+        .removeOne({ _id: new ObjectId(args.eventId) });
+      return result.deletedCount;
     },
     async setOrganisers(parent, args, ctx) {
       // Validate arguments
