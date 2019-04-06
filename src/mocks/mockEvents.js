@@ -12,7 +12,7 @@ export default [
     _id: hackmonId,
     name: "HackMon 2019",
     description: "If you don't like it, change it.",
-    organiserIds: [BenId, MariuszId],
+    organiserIds: [EricId, BenId, MariuszId],
     capabilities: [
       {
         _id: cateringId,
