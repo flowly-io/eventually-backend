@@ -17,7 +17,26 @@ export default {
         .findOne({ _id: new ObjectId(ctx.eventId) });
     }
   },
-  Mutation: {}
+  Mutation: {
+    async createEvent(parent, args, ctx) {
+      // Validate arguments
+    },
+    async deleteEvent(parent, args, ctx) {
+      // Validate arguments
+    },
+    async setOrganisers(parent, args, ctx) {
+      // Validate arguments
+    },
+    async setAudiences(parent, args, ctx) {
+      // Validate arguments
+    },
+    async addCapability(parent, args, ctx) {
+      // Validate arguments
+    },
+    async removeCapability(parent, args, ctx) {
+      // Validate arguments
+    }
+  }
 };
 
 export const Event = {
