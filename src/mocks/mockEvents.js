@@ -9,60 +9,6 @@ export const partyId = new ObjectId("5ca928005bac87ff91fa5752");
 
 export default [
   {
-    _id: gamesNightId,
-    name: "WIRED Games Night",
-    description: "A night of fun and relaxation for all!",
-    organiserIds: [EricId],
-    capabilities: [
-      {
-        _id: cateringId,
-        name: "Catering",
-        description: "Food and refreshments for your event",
-        checkpoints: [
-          {
-            description: "Allocate Budget",
-            done: false,
-            type: "TodoCheckpoint"
-          },
-          {
-            description: "Find suitable catering",
-            done: false,
-            type: "TodoCheckpoint"
-          },
-          {
-            description: "Order catering",
-            done: false,
-            type: "TodoCheckpoint"
-          },
-          {
-            description: "Pay catering company",
-            done: false,
-            type: "TodoCheckpoint"
-          }
-        ],
-        delegateGroupNames: ["catering"]
-      },
-      {
-        _id: binsId,
-        name: "Bins",
-        description: "Rubbish disposal for your event",
-        checkpoints: [
-          { description: "Find bins", done: false, type: "TodoCheckpoint" },
-          {
-            description: "Arrange disposal time",
-            done: false,
-            type: "TodoCheckpoint"
-          }
-        ],
-        delegateGroupNames: ["bins"]
-      }
-    ],
-    audiences: ["STUDENT"],
-    maxCapacity: 50,
-    startDateTime: "2019-04-10T15:00:00Z",
-    endDateTime: "2019-04-10T20:00:00Z"
-  },
-  {
     _id: hackmonId,
     name: "HackMon 2019",
     description: "If you don't like it, change it.",
@@ -135,6 +81,60 @@ export default [
     maxCapacity: 200,
     startDateTime: "2019-04-06T00:00:00Z",
     endDateTime: "2019-04-07T00:00:00Z"
+  },
+  {
+    _id: gamesNightId,
+    name: "WIRED Games Night",
+    description: "A night of fun and relaxation for all!",
+    organiserIds: [EricId, BenId],
+    capabilities: [
+      {
+        _id: cateringId,
+        name: "Catering",
+        description: "Food and refreshments for your event",
+        checkpoints: [
+          {
+            description: "Allocate Budget",
+            done: false,
+            type: "TodoCheckpoint"
+          },
+          {
+            description: "Find suitable catering",
+            done: false,
+            type: "TodoCheckpoint"
+          },
+          {
+            description: "Order catering",
+            done: false,
+            type: "TodoCheckpoint"
+          },
+          {
+            description: "Pay catering company",
+            done: false,
+            type: "TodoCheckpoint"
+          }
+        ],
+        delegateGroupNames: ["catering"]
+      },
+      {
+        _id: binsId,
+        name: "Bins",
+        description: "Rubbish disposal for your event",
+        checkpoints: [
+          { description: "Find bins", done: false, type: "TodoCheckpoint" },
+          {
+            description: "Arrange disposal time",
+            done: false,
+            type: "TodoCheckpoint"
+          }
+        ],
+        delegateGroupNames: ["bins"]
+      }
+    ],
+    audiences: ["STUDENT"],
+    maxCapacity: 50,
+    startDateTime: "2019-04-10T15:00:00Z",
+    endDateTime: "2019-04-10T20:00:00Z"
   },
   {
     _id: partyId,
