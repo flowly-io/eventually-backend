@@ -3,6 +3,9 @@ import { ApolloServer } from "apollo-server";
 import { typeDefs, resolvers } from "./graphql";
 import getDB from "./services/database";
 
+// LOADERS
+import eventOrganisersLoader from "./loaders/eventOrganisers";
+
 // Set up Apollo server
 const server = new ApolloServer({
   typeDefs,
@@ -18,7 +21,11 @@ const server = new ApolloServer({
     // TODO: add user info to context
     const userId = header;
 
-    return { db, userId };
+    return {
+      db,
+      userId,
+      loaders: { eventOrganisersLoader: eventOrganisersLoader(db) }
+    };
   },
   introspection: true
 });

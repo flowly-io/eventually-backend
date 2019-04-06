@@ -1,6 +1,6 @@
 import user from "./user";
 import capability from "./capability";
-import event from "./event";
+import event, { Event } from "./event";
 
 const resolvers = {
   Query: {
@@ -12,7 +12,8 @@ const resolvers = {
     ...user.Mutation,
     ...capability.Mutation,
     ...event.Mutation
-  }
+  },
+  Event
 };
 
 export { resolvers };
