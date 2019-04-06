@@ -1,5 +1,10 @@
 import { ObjectId } from "mongodb";
 import { UserInputError } from "apollo-server";
+import moment from "moment";
+
+const isDateTimeValid = dateTime => {
+  return moment(dateTime).isValid();
+};
 
 export default {
   Query: {
@@ -20,6 +25,24 @@ export default {
   Mutation: {
     async createEvent(parent, args, ctx) {
       // Validate arguments
+      const _id = new ObjectId();
+      const { userId } = ctx;
+
+      if (
+        !isDateTimeValid(args.startDateTime) ||
+        !isDateTimeValid(args.endDateTime)
+      ) {
+        throw new UserInputError(
+          "Start Date/End Date Time must be in a valid ISO format"
+        );
+      }
+      await ctx.db.collection("events").insertOne({
+        _id,
+        organiserIds: [new ObjectId(userId)],
+        audiences: [],
+        ...args.event
+      });
+      return await ctx.db.collection("events").findOne({ _id });
     },
     async deleteEvent(parent, args, ctx) {
       // Validate arguments
