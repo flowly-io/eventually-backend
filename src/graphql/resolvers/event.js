@@ -73,6 +73,21 @@ export default {
     },
     async setAudiences(parent, args, ctx) {
       // Validate arguments
+      const collectionsDb = ctx.db.collection("events");
+      const eventId = args.eventId;
+      const audiences = args.audiences;
+      if (!eventId) throw new UserInputError("Event Id cannot be empty");
+      const object = await collectionsDb.findOne({
+        _id: new ObjectId(eventId)
+      });
+      if (!object) {
+        throw new UserInputError("Event does not exist");
+      }
+      const res = await collectionsDb.updateOne(
+        { _id: new ObjectId(eventId) },
+        { $set: { audiences } }
+      );
+      return await collectionsDb.findOne({ _id: new ObjectId(eventId) });
     },
     async addCapability(parent, args, ctx) {
       // Validate arguments
