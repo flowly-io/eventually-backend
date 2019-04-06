@@ -7,7 +7,6 @@ const loader = db =>
       .collection("users")
       .find({ _id: { $in: [...uniqueKeys] } });
     const data = await results.toArray();
-    console.log(data);
     const dict = data.reduce(
       (acc, currentVal) => ({
         ...acc,
