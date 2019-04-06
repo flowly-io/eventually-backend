@@ -33,7 +33,7 @@ const USE_MOCK_DATA = true;
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: async ({ req }) => {
+  async context({ req }) {
     // Connect to the database
     const db = await getDB();
 
@@ -64,9 +64,11 @@ const server = new ApolloServer({
       }
     };
   },
+  formatError(error) {
+    console.log(error);
+  },
 
   // FIXME: remove these in production as best practice
-  cors: false,
   introspection: true,
   playground: true
 });
