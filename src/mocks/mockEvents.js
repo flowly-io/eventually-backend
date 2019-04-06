@@ -3,9 +3,9 @@ import { ObjectId } from "mongodb";
 import { EricId, BenId, NicholasId, MariuszId, AndreyId } from "./mockUsers";
 import { binsId, cateringId, consentId, securityId } from "./mockCapabilities";
 
-export const gamesNightId = new ObjectId();
-export const hackmonId = new ObjectId();
-export const partyId = new ObjectId();
+export const gamesNightId = new ObjectId("5ca928005bac87ff91fa5750");
+export const hackmonId = new ObjectId("5ca928005bac87ff91fa5751");
+export const partyId = new ObjectId("5ca928005bac87ff91fa5752");
 
 export default [
   {
