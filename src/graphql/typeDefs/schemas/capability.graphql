@@ -1,23 +1,110 @@
-type Capability {
+"""
+The CapabilityInterface defines the fields for something
+that is should be provided by an event. The `checkpoints`
+field holds a list of requirements to fulfil this capability.
+"""
+interface CapabilityInterface {
   _id: ID!
   name: String
   description: String
-  checkpoints: [String]
-  delegateGroups: [String]
+  checkpoints: [CheckpointInterface]
 }
 
+"""
+A Capability is the default implementation of the capability.
+"""
+type Capability implements CapabilityInterface {
+  _id: ID!
+  name: String
+  description: String
+  checkpoints: [CheckpointInterface]
+  delegateGroups: [Group]
+}
+
+"""
+A CapabilityInstances is an instance of a Capability that has
+been added to an event. Use the `template` field to view
+the master template for this Capability.
+"""
+type CapabilityInstance implements CapabilityInterface {
+  _id: ID!
+  name: String!
+  description: String
+  checkpoints: [CheckpointInterface]
+  template: Capability
+}
+
+"""
+A EventCapabilityInstance is an instance of a Capability that
+has been added to an event. Use the `event` field to view
+the event that this instance of the Capability is from.
+"""
+type EventCapabilityInstance implements CapabilityInterface {
+  _id: ID!
+  name: String
+  description: String
+  checkpoints: [CheckpointInterface]
+  event: Event
+}
+
+"""
+Fields for creating a capability.
+"""
 input CapabilityInput {
   name: String
   description: String
-  checkpoints: [String]
+}
+
+"""
+Fields for adding a Todo checkpoint to a capability.
+"""
+input CheckpointInputTodo {
+  description: String!
+  done: Boolean!
 }
 
 extend type Query {
+  """
+  Get a capability by its Id.
+  """
   capability(capabilityId: ID!): Capability
+
+  """
+  Get all capabilities.
+  """
   capabilities: [Capability]
 }
 
 extend type Mutation {
+  """
+  Create a capability.
+  """
   createCapability(capability: CapabilityInput!): Capability
+
+  """
+  Delete a capability.
+  Note that this will not delete capability instances,
+  but references to this capability will return null.
+  """
   deleteCapability(capabilityId: ID!): Int
+
+  """
+  Set the groups that is responsible for this capability.
+  """
+  setCapabilityDelegateGroups(capabilityId: ID!, groups: [String!]!): Capability
+
+  """
+  Remove a checkpoint from a capability.
+  """
+  removeCapabilityCheckpiont(capabilityId: ID!, checkpoint: String!): Capability
+
+  """
+  Add a Todo checkpoint to a capability.
+  """
+  addCapabilityCheckpointTodo(
+    capabilityId: ID!
+    checkpoint: CheckpointInputTodo
+  ): Capability
+
+  # TODO: add more checkpoint types here.
 }

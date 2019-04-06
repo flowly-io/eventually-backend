@@ -1,5 +1,10 @@
 import user from "./user";
-import capability, { CapabilityInstance } from "./capability";
+import capability, {
+  Capability,
+  CapabilityInstance,
+  CapabilityInterface,
+  CheckpointInterface
+} from "./capability";
 import event, { Event } from "./event";
 import group, { Group } from "./group";
 
@@ -18,7 +23,10 @@ const resolvers = {
   },
   Event,
   Group,
-  CapabilityInstance
+  Capability,
+  CapabilityInstance,
+  CapabilityInterface,
+  CheckpointInterface
 };
 
 export { resolvers };

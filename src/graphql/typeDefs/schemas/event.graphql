@@ -1,28 +1,23 @@
-type Checkpoint {
-  description: String!
-  done: Boolean!
-}
-
-type CapabilityInstance {
-  _id: ID!
-  name: String!
-  description: String
-  checkpoints: [Checkpoint]
-  parent: Capability
-}
-
+"""
+An event holds information about how to plan and execute an event.
+Desired capabilities for the event can be added to help understand what
+requirements are needed in order to make the event succeed.
+"""
 type Event {
   _id: ID!
   name: String!
   description: String
   organisers: [User]
+  capabilities: [CapabilityInterface]
   audiences: [UserType]
   maxCapacity: Int
-  capabilities: [CapabilityInstance]
   startDateTime: String
   endDateTime: String
 }
 
+"""
+Fields for creating an event.
+"""
 input EventInput {
   name: String!
   description: String
@@ -32,16 +27,51 @@ input EventInput {
 }
 
 extend type Query {
+  """
+  Create an event.
+  """
   event(eventId: ID!): Event
+
+  """
+  Get a list of all events.
+  """
   events: [Event]
+
+  """
+  Get a list of events by the current user.
+  """
   eventsByMe: [Event]
 }
 
 extend type Mutation {
+  """
+  Create a new event.
+  """
   createEvent(event: EventInput!): Event
+
+  """
+  Delete an event.
+  """
   deleteEvent(eventId: ID!): Int
+
+  """
+  Set the organisers of the event.
+  Organisers will have permission to modify the event.
+  """
   setOrganisers(eventId: ID!, organiserIds: [ID!]!): Event
+
+  """
+  Set the audience type the event is intended for.
+  """
   setAudiences(eventId: ID!, audiences: [UserType!]!): Event
+
+  """
+  Add a capability to the event.
+  """
   addCapability(eventId: ID!, capabilityId: ID!): Event
-  removeCapability(eventId: ID!, capabilityInstanceId: ID!): Event
+
+  """
+  Remove a capability from the event.
+  """
+  removeCapability(eventId: ID!, capabilityId: ID!): Event
 }

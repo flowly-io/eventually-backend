@@ -1,9 +1,33 @@
+"""
+A group represents an entity that is responsible for
+looking after a number of capabilities.
+"""
 type Group {
   name: String!
   users: [User]
+
+  """
+  A list of capabilities that this group is responsible for.
+  """
+  capabilities: [Capability]
+
+  """
+  A list of instances of capabilities that are awaiting review
+  by events currently being planned.
+
+  TODO: Find a way to filter out instances of PAST events.
+  """
+  capabilityInstances: [CapabilityInterface]
 }
 
 extend type Query {
+  """
+  Get a list of all groups.
+  """
   groups: [Group]
+
+  """
+  Get a group by its name.
+  """
   group(groupName: String!): Group
 }

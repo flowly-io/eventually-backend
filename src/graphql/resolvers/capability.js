@@ -29,7 +29,8 @@ export default {
       const _id = new ObjectId();
       await ctx.db.collection("capabilities").insertOne({
         _id,
-        ...capability
+        ...capability,
+        delegateGroupNames: []
       });
       return await ctx.db.collection("capabilities").findOne({ _id });
     },
@@ -41,14 +42,136 @@ export default {
         .collection("capabilities")
         .removeOne({ _id: new ObjectId(args.capabilityId) });
       return result.deletedCount;
+    },
+
+    async setCapabilityDelegateGroups(parent, args, ctx) {
+      const { capabilityId, groups } = args;
+      // Ensure capabilityId is not null
+      if (!capabilityId)
+        throw new UserInputError("Capability Id cannot be empty");
+
+      // Check that capability exists
+      const capabilityCheck = await ctx.db
+        .collection("capabilities")
+        .findOne({ _id: new ObjectId(capabilityId) });
+
+      if (!capabilityCheck)
+        throw new ForbiddenError(
+          `The capability "${capabilityId}" does not exist.`
+        );
+
+      // Check that groups is an array
+      if (!Array.isArray(groups)) {
+        throw new UserInptuError(`Groups must be an array of strings.`);
+      }
+
+      await ctx.db
+        .collection("capabilities")
+        .updateOne(
+          { _id: new ObjectId(capabilityId) },
+          { $set: { delegateGroupNames: groups } }
+        );
+
+      return await ctx.db
+        .collection("capabilities")
+        .findOne({ _id: new ObjectId(capabilityId) });
+    },
+
+    async removeCapabilityCheckpiont(parent, args, ctx) {
+      const { capabilityId, checkpoint } = args;
+      // Ensure capabilityId is not null
+      if (!capabilityId)
+        throw new UserInputError("Capability Id cannot be empty");
+
+      // Check that capability exists
+      const capabilityCheck = await ctx.db
+        .collection("capabilities")
+        .findOne({ _id: new ObjectId(capabilityId) });
+
+      if (!capabilityCheck)
+        throw new ForbiddenError(
+          `The capability "${capabilityId}" does not exist.`
+        );
+
+      // Remove checkpoint
+      await ctx.db
+        .collection("capabilities")
+        .updateOne(
+          { _id: new ObjectId(capabilityId) },
+          { $pull: { checkpoints: { description: checkpoint } } }
+        );
+
+      return await ctx.db
+        .collection("capabilities")
+        .findOne({ _id: new ObjectId(capabilityId) });
+    },
+
+    async addCapabilityCheckpointTodo(parent, args, ctx) {
+      const { capabilityId, checkpoint } = args;
+      // Ensure capabilityId is not null
+      if (!capabilityId)
+        throw new UserInputError("Capability Id cannot be empty");
+
+      // Check that capability exists
+      const capabilityCheck = await ctx.db
+        .collection("capabilities")
+        .findOne({ _id: new ObjectId(capabilityId) });
+
+      if (!capabilityCheck)
+        throw new ForbiddenError(
+          `The capability "${capabilityId}" does not exist.`
+        );
+
+      // Check that capability checkpoint is unique
+      let checkpointCheck;
+      capabilityCheck.checkpoints.forEach(c => {
+        if (c.description === checkpoint.description) {
+          checkpointCheck = c;
+        }
+      });
+      if (checkpointCheck) {
+        throw new ForbiddenError(
+          `A checkpoint with the same description already exists.`
+        );
+      }
+
+      // Add checkpoint
+      await ctx.db
+        .collection("capabilities")
+        .updateOne(
+          { _id: new ObjectId(capabilityId) },
+          { $push: { checkpoints: { ...checkpoint, type: "TodoCheckpoint" } } }
+        );
+
+      return await ctx.db
+        .collection("capabilities")
+        .findOne({ _id: new ObjectId(capabilityId) });
     }
   }
 };
 
+export const Capability = {
+  async delegateGroups(parent, args, ctx) {
+    return parent.delegateGroupNames.map(name => ({ name }));
+  }
+};
+
 export const CapabilityInstance = {
-  parent: async (parent, args, ctx) => {
+  async template(parent, args, ctx) {
     return ctx.db
       .collection("capabilities")
       .findOne({ _id: new ObjectId(parent._id) });
+  }
+};
+
+export const CapabilityInterface = {
+  __resolveType(parent, args, ctx) {
+    return parent.type || "Capability";
+  }
+};
+
+export const CheckpointInterface = {
+  __resolveType(parent, args, ctx) {
+    return parent.type || "Checkpoint";
   }
 };

@@ -1,0 +1,23 @@
+"""
+The CheckpointInterface describes something that needs
+to be done to fulfil a capability.
+"""
+interface CheckpointInterface {
+  description: String!
+}
+
+"""
+A Checkpoint description.
+"""
+type Checkpoint implements CheckpointInterface {
+  description: String!
+}
+
+"""
+A TodoCheckpoint holds information about whether the
+checkpoint is complete.
+"""
+type TodoCheckpoint implements CheckpointInterface {
+  description: String!
+  done: Boolean!
+}
