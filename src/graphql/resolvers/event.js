@@ -56,7 +56,23 @@ export default {
     async setOrganisers(parent, args, ctx) {
       // Validate arguments
       const eventId = args.eventId;
+      const organiserIds = args.organiserIds;
       if (!eventId) throw new UserInputError("Event Id cannot be empty");
+      const object = await ctx.db
+        .collection("events")
+        .findOne({ _id: new ObjectId(eventId) });
+      if (!object) {
+        throw new UserInputError("Event does not exist");
+      }
+      const res = await ctx.db
+        .collection("events")
+        .updateOne(
+          { _id: new ObjectId(eventId) },
+          { $set: { organiserIds: organiserIds.map(id => new ObjectId(id)) } }
+        );
+      return await ctx.db
+        .collection("events")
+        .findOne({ _id: new ObjectId(eventId) });
     },
     async setAudiences(parent, args, ctx) {
       // Validate arguments
@@ -72,6 +88,9 @@ export default {
 
 export const Event = {
   async organisers(parent, args, ctx) {
+    if (!parent.organiserIds) {
+      return [];
+    }
     return ctx.loaders.eventOrganisersLoader.loadMany(parent.organiserIds);
   }
 };
