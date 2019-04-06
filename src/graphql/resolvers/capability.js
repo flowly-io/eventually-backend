@@ -146,6 +146,58 @@ export default {
       return await ctx.db
         .collection("capabilities")
         .findOne({ _id: new ObjectId(capabilityId) });
+    },
+
+    async setCapabilityCheckpointTodoStatus(parnet, args, ctx) {
+      const { capabilityId, checkpointIndex, status } = args;
+
+      // Ensure capabilityId is not null
+      if (!capabilityId)
+        throw new UserInputError("Capability Id cannot be empty");
+
+      // Check that capability exists
+      const capabilityCheck = await ctx.db
+        .collection("capabilities")
+        .findOne({ _id: new ObjectId(capabilityId) });
+
+      if (!capabilityCheck)
+        throw new ForbiddenError(
+          `The capability "${capabilityId}" does not exist.`
+        );
+
+      // Check that capability checkpoint is a todo
+      const checkpoint = capabilityCheck.checkpoints[checkpointIndex];
+      if (!checkpoint || checkpoint.type !== "TodoCheckpoint") {
+        if (checkpoint) {
+          throw new ForbiddenError(
+            `The checkpoint "${checheckpoint.description}" is not a Todo`
+          );
+        } else
+          throw new ForbiddenError(
+            `The checkpoint index "${checkpointIndex}" is invalid`
+          );
+      }
+
+      // Check that status is a boolean
+      if (typeof status !== "boolean") {
+        throw new UserInputError(
+          `status must be a boolean, recieved ${typeof status}`
+        );
+      }
+
+      // Set the capability
+      await ctx.db.collection("capabilities").updateOne(
+        {
+          _id: new ObjectId(capabilityId)
+        },
+        {
+          $set: { [`checkpoints.${checkpointIndex}.done`]: status }
+        }
+      );
+
+      return ctx.db.collection("capabilities").findOne({
+        _id: new ObjectId(capabilityId)
+      });
     }
   }
 };

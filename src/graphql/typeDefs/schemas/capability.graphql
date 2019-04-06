@@ -106,5 +106,14 @@ extend type Mutation {
     checkpoint: CheckpointInputTodo
   ): Capability
 
+  """
+  Set the `done` status of a todo check point in a capability.
+  """
+  setCapabilityCheckpointTodoStatus(
+    capabilityId: ID!
+    checkpointIndex: Int!
+    status: Boolean!
+  ): Capability
+
   # TODO: add more checkpoint types here.
 }
