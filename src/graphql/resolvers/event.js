@@ -143,7 +143,7 @@ export default {
 
       // Create capabiliity instance
       const capabilityInstance = {
-        _id: new ObjectId(),
+        _id: new ObjectId(capabilityCheck._id),
         name: capabilityCheck.name,
         description: capabilityCheck.description,
         checkpoints: capabilityCheck.checkpoints.map(c => ({
@@ -183,7 +183,7 @@ export default {
         );
 
       // Remove the capability
-      await ctx.db.collection("events").update(
+      await ctx.db.collection("events").updateOne(
         { _id: new ObjectId(eventId) },
         {
           $pull: { capabilities: { _id: new ObjectId(capabilityInstanceId) } }

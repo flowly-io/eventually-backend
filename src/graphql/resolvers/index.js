@@ -1,5 +1,5 @@
 import user from "./user";
-import capability from "./capability";
+import capability, { CapabilityInstance } from "./capability";
 import event, { Event } from "./event";
 import group, { Group } from "./group";
 
@@ -17,7 +17,8 @@ const resolvers = {
     ...group.Mutation
   },
   Event,
-  Group
+  Group,
+  CapabilityInstance
 };
 
 export { resolvers };

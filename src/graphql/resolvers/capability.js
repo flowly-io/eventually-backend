@@ -44,3 +44,11 @@ export default {
     }
   }
 };
+
+export const CapabilityInstance = {
+  parent: async (parent, args, ctx) => {
+    return ctx.db
+      .collection("capabilities")
+      .findOne({ _id: new ObjectId(parent._id) });
+  }
+};

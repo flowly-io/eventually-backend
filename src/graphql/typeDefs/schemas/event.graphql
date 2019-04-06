@@ -8,6 +8,7 @@ type CapabilityInstance {
   name: String!
   description: String
   checkpoints: [Checkpoint]
+  parent: Capability
 }
 
 type Event {
