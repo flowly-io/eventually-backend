@@ -66,6 +66,7 @@ const server = new ApolloServer({
   },
 
   // FIXME: remove these in production as best practice
+  cors: false,
   introspection: true,
   playground: true
 });
