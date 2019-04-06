@@ -13,6 +13,7 @@ type CapabilityInstance {
 type Event {
   _id: ID!
   name: String!
+  description: String
   organisers: [User]
   audiences: [UserType]
   maxCapacity: Int
@@ -23,6 +24,7 @@ type Event {
 
 input EventInput {
   name: String!
+  description: String
   maxCapacity: Int
   startDateTime: String
   endDateTime: String
