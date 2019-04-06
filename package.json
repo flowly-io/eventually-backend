@@ -17,6 +17,7 @@
     "@babel/polyfill": "7.4.3",
     "apollo-server": "2.4.8",
     "core-js": "2.5.7",
+    "dataloader": "1.4.0",
     "dotenv": "7.0.0",
     "graphql": "14.2.1",
     "graphql-tag": "2.10.1",
