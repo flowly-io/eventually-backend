@@ -1,7 +1,10 @@
 import { ApolloServer } from "apollo-server";
+import { parse } from "graphql";
+import moment from "moment";
 
 import { typeDefs, resolvers } from "./graphql";
 import getDB from "./services/database";
+import { collectFields } from "./graphql/utils/graphqlOperationUtils";
 
 // LOADERS
 import usersLoader from "./loaders/users";
@@ -21,6 +24,14 @@ const server = new ApolloServer({
     // TODO: add user info to context
     const userId = header;
 
+    // FIXME: Remove this in production. Logging purposes only.
+    const fields = collectFields(parse(req.body.query).definitions[0]);
+    console.log(
+      `${moment().format(
+        "YYYY-MM-DD hh:mm:ssa"
+      )} | Processing requests: ${fields.join(", ")}`
+    );
+
     return {
       db,
       userId,
@@ -32,5 +43,5 @@ const server = new ApolloServer({
 
 // Launch the server
 server.listen({ port: process.env.PORT || 4000 }).then(({ url }) => {
-  console.log(`🚀  Server ready at ${url}`);
+  console.log(`\n🚀  Server ready at ${url}`);
 });
