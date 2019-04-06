@@ -55,6 +55,8 @@ export default {
     },
     async setOrganisers(parent, args, ctx) {
       // Validate arguments
+      const eventId = args.eventId;
+      if (!eventId) throw new UserInputError("Event Id cannot be empty");
     },
     async setAudiences(parent, args, ctx) {
       // Validate arguments
