@@ -15,9 +15,11 @@ export default {
 
     // Get event by id
     async event(parent, args, ctx) {
-      return ctx.db
+      const event = await ctx.db
         .collection("events")
-        .findOne({ _id: new ObjectId(ctx.eventId) });
+        .findOne({ _id: new ObjectId(args.eventId) });
+      console.log(event);
+      return event;
     }
   },
 
