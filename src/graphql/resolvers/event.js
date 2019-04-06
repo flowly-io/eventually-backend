@@ -1,10 +1,7 @@
 import { ObjectId } from "mongodb";
-import { UserInputError } from "apollo-server";
-import moment from "moment";
+import { UserInputError, ForbiddenError } from "apollo-server";
 
-const isDateTimeValid = dateTime => {
-  return moment(dateTime).isValid();
-};
+import { isDateTimeValid } from "../utils/validators";
 
 export default {
   Query: {
@@ -22,6 +19,7 @@ export default {
         .findOne({ _id: new ObjectId(ctx.eventId) });
     }
   },
+
   Mutation: {
     async createEvent(parent, args, ctx) {
       // Validate arguments
@@ -61,6 +59,66 @@ export default {
     },
     async addCapability(parent, args, ctx) {
       // Validate arguments
+      const { eventId, capabilityId } = args;
+      if (!eventId) throw new UserInputError("Event Id cannot be empty");
+      if (!capabilityId)
+        throw new UserInputError("Capability Id cannot be empty");
+
+      // Check that event exists
+      const eventCheck = await ctx.db
+        .collection("events")
+        .findOne({ _id: new ObjectId(eventId) });
+
+      if (!eventCheck)
+        return new ForbiddenError(
+          `The requested event "${capabilityId}" does not exist.`
+        );
+
+      // Check that capability exists
+      const capabilityCheck = await ctx.db
+        .collection("capabilities")
+        .findOne({ _id: new ObjectId(capabilityId) });
+
+      if (!capabilityCheck)
+        return new ForbiddenError(
+          `The requested capability "${capabilityId}" does not exist.`
+        );
+
+      // Ensure the capability is not duplicated in the event
+      if (
+        eventCheck.capabilities
+          .map(c => c.name)
+          .indexOf(capabilityCheck.name) >= 0
+      ) {
+        throw new ForbiddenError(
+          `The capability ${
+            capabilityCheck.name
+          } is already added to this event.`
+        );
+      }
+
+      // Create capabiliity instance
+      const capabilityInstance = {
+        _id: new ObjectId(),
+        name: capabilityCheck.name,
+        description: capabilityCheck.description,
+        checkpoints: capabilityCheck.checkpoints.map(c => ({
+          description: c,
+          done: false
+        }))
+      };
+
+      // Add the capability
+      await ctx.db
+        .collection("events")
+        .updateOne(
+          { _id: new ObjectId(eventId) },
+          { $push: { capabilities: capabilityInstance } }
+        );
+
+      return ctx.db
+        .collection("events")
+        .findOne({ _id: new ObjectId(eventId) });
     },
     async removeCapability(parent, args, ctx) {
       // Validate arguments
