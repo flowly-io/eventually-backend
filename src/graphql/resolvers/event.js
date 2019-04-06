@@ -18,8 +18,14 @@ export default {
       const event = await ctx.db
         .collection("events")
         .findOne({ _id: new ObjectId(args.eventId) });
-      console.log(event);
       return event;
+    },
+
+    async eventsByMe(parent, args, ctx) {
+      return ctx.db
+        .collection("events")
+        .find({ organiserIds: new ObjectId(ctx.userId) })
+        .toArray();
     }
   },
 
