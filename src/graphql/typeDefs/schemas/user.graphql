@@ -1,14 +1,22 @@
+enum UserType {
+  STUDENT
+  STAFF
+  PUBLIC
+}
+
 type User {
   _id: ID!
   firstname: String
   lastname: String
   email: String
+  userType: UserType
   permissions: [String]
 }
 
 input UserInput {
   firstname: String
   lastname: String
+  userType: UserType
   email: String
 }
 
