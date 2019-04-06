@@ -10,7 +10,7 @@ type User {
   lastname: String
   email: String
   userType: UserType
-  permissions: [String]
+  groups: [String]
 }
 
 input UserInput {
@@ -24,9 +24,11 @@ extend type Query {
   me: User
   user(userId: ID!): User
   users: [User]
+  usersInGroup(groupName: String!): [User]
 }
 
 extend type Mutation {
   createUser(user: UserInput!): User
   deleteUser(userId: ID!): Int
+  setUserGroups(userId: ID!, groups: [String!]!): User
 }

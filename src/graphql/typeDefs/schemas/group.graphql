@@ -1,0 +1,9 @@
+type Group {
+  name: String!
+  users: [User]
+}
+
+extend type Query {
+  groups: [Group]
+  group(groupName: String!): Group
+}

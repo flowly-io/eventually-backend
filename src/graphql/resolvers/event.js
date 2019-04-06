@@ -200,6 +200,6 @@ export default {
 export const Event = {
   async organisers(parent, args, ctx) {
     if (!parent.organiserIds) return [];
-    return ctx.loaders.eventOrganisersLoader.loadMany(parent.organiserIds);
+    return ctx.loaders.usersLoader.loadMany(parent.organiserIds);
   }
 };

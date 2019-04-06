@@ -4,7 +4,7 @@ import { typeDefs, resolvers } from "./graphql";
 import getDB from "./services/database";
 
 // LOADERS
-import eventOrganisersLoader from "./loaders/eventOrganisers";
+import usersLoader from "./loaders/users";
 
 // Set up Apollo server
 const server = new ApolloServer({
@@ -24,7 +24,7 @@ const server = new ApolloServer({
     return {
       db,
       userId,
-      loaders: { eventOrganisersLoader: eventOrganisersLoader(db) }
+      loaders: { usersLoader: usersLoader(db) }
     };
   },
   introspection: true

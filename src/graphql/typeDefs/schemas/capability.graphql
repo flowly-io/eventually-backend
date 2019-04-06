@@ -3,6 +3,7 @@ type Capability {
   name: String
   description: String
   checkpoints: [String]
+  delegateGroups: [String]
 }
 
 input CapabilityInput {
