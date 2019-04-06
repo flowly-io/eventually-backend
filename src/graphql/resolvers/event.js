@@ -143,7 +143,7 @@ export default {
 
       // Create capabiliity instance
       const capabilityInstance = {
-        _id: new ObjectId(),
+        _id: new ObjectId(capabilityCheck._id),
         name: capabilityCheck.name,
         description: capabilityCheck.description,
         checkpoints: capabilityCheck.checkpoints.map(c => ({
@@ -167,10 +167,10 @@ export default {
 
     async removeCapability(parent, args, ctx) {
       // Validate arguments
-      const { eventId, capabilityInstanceId } = args;
+      const { eventId, capabilityId } = args;
       if (!eventId) throw new UserInputError("Event Id cannot be empty");
-      if (!capabilityInstanceId)
-        throw new UserInputError("Capability instance Id cannot be empty");
+      if (!capabilityId)
+        throw new UserInputError("Capability Id cannot be empty");
 
       // Check that event exists
       const eventCheck = await ctx.db
@@ -183,10 +183,10 @@ export default {
         );
 
       // Remove the capability
-      await ctx.db.collection("events").update(
+      await ctx.db.collection("events").updateOne(
         { _id: new ObjectId(eventId) },
         {
-          $pull: { capabilities: { _id: new ObjectId(capabilityInstanceId) } }
+          $pull: { capabilities: { _id: new ObjectId(capabilityId) } }
         }
       );
 
@@ -200,6 +200,9 @@ export default {
 export const Event = {
   async organisers(parent, args, ctx) {
     if (!parent.organiserIds) return [];
-    return ctx.loaders.eventOrganisersLoader.loadMany(parent.organiserIds);
+    return ctx.loaders.usersLoader.loadMany(parent.organiserIds);
+  },
+  async capabilities(parent, args, ctx) {
+    return parent.capabilities.map(c => ({ ...c, type: "CapabilityInstance" }));
   }
 };

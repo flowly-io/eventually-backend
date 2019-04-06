@@ -4,15 +4,25 @@ enum UserType {
   PUBLIC
 }
 
+"""
+A user has access to create and view events.
+If the user is an orgnaiser of an event, they
+can modify its capabilties. If a user is part of
+a group, they can view all capabilities available
+to that group.
+"""
 type User {
   _id: ID!
   firstname: String
   lastname: String
   email: String
   userType: UserType
-  permissions: [String]
+  groups: [String]
 }
 
+"""
+Fields to create a user.
+"""
 input UserInput {
   firstname: String
   lastname: String
@@ -21,12 +31,35 @@ input UserInput {
 }
 
 extend type Query {
+  """
+  Get the current user.
+  """
   me: User
+
+  """
+  Get a user by their Id.
+  """
   user(userId: ID!): User
+
+  """
+  Get a list of all usrs.
+  """
   users: [User]
 }
 
 extend type Mutation {
+  """
+  Create a user.
+  """
   createUser(user: UserInput!): User
+
+  """
+  Delete a user.
+  """
   deleteUser(userId: ID!): Int
+
+  """
+  Set the groups that the user is a part of.
+  """
+  setUserGroups(userId: ID!, groups: [String!]!): User
 }
