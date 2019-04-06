@@ -36,7 +36,7 @@ extend type Query {
 
 extend type Mutation {
   createEvent(event: EventInput!): Event
-  deleteEvent(eventId: ID!): Event
+  deleteEvent(eventId: ID!): Int
   setOrganisers(eventId: ID!, userId: [ID!]!): Event
   setAudiences(eventId: ID!, audiences: [UserType!]!): Event
   addCapability(eventId: ID!, capabilityId: ID!): Event
