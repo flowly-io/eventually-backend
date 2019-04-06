@@ -1,0 +1,44 @@
+type Checkpoint {
+  description: String!
+  done: Boolean!
+}
+
+type CapabilityInstance {
+  _id: ID!
+  name: String!
+  description: String
+  checkpoints: [Checkpoint]
+}
+
+type Event {
+  _id: ID!
+  name: String!
+  organisers: [User]
+  audiences: [UserType]
+  maxCapacity: Int
+  capabilities: [CapabilityInstance]
+  startDateTime: String
+  endDateTime: String
+}
+
+input EventInput {
+  name: String!
+  maxCapacity: Int
+  startDateTime: String
+  endDateTime: String
+}
+
+extend type Query {
+  event(eventId: ID!): Event
+  events: [Event]
+  eventsByUser(userId: ID!): [Event]
+}
+
+extend type Mutation {
+  createEvent(event: EventInput!): Event
+  deleteEvent(eventId: ID!): Event
+  setOrganisers(eventId: ID!, userId: [ID!]!): Event
+  setAudiences(eventId: ID!, audiences: [UserType!]!): Event
+  addCapability(eventId: ID!, capabilityId: ID!): Event
+  removeCapability(eventId: ID!, capabilityId: ID!): Event
+}
