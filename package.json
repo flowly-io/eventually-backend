@@ -8,7 +8,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "build": "./node_modules/.bin/babel src --out-dir build",
+    "build": "./node_modules/.bin/babel src --out-dir build && ./node_modules/.bin/cpx src/**/*.graphql build",
     "develop": "./node_modules/.bin/babel-watch src/index.js --extensions .graphql",
     "start": "node build/index.js",
     "heroku-postbuid": "yarn build"
@@ -26,6 +26,7 @@
     "@babel/cli": "7.4.3",
     "@babel/core": "7.4.3",
     "@babel/preset-env": "7.4.3",
-    "babel-watch": "7.0.0"
+    "babel-watch": "7.0.0",
+    "cpx": "1.5.0"
   }
 }

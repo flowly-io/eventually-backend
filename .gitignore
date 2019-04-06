@@ -92,4 +92,4 @@ lerna-debug.log
 Thumbs.db
 
 # Service accounts
-service-account.json
+storage
