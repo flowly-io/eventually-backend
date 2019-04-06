@@ -40,5 +40,5 @@ extend type Mutation {
   setOrganisers(eventId: ID!, organiserIds: [ID!]!): Event
   setAudiences(eventId: ID!, audiences: [UserType!]!): Event
   addCapability(eventId: ID!, capabilityId: ID!): Event
-  removeCapability(eventId: ID!, capabilityId: ID!): Event
+  removeCapability(eventId: ID!, capabilityInstanceId: ID!): Event
 }

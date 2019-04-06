@@ -12,6 +12,7 @@ export default {
         .find({})
         .toArray();
     },
+
     // Get event by id
     async event(parent, args, ctx) {
       return ctx.db
@@ -38,10 +39,12 @@ export default {
         _id,
         organiserIds: [new ObjectId(userId)],
         audiences: [],
+        capabilities: [],
         ...args.event
       });
       return await ctx.db.collection("events").findOne({ _id });
     },
+
     async deleteEvent(parent, args, ctx) {
       // Validate arguments
 
@@ -51,6 +54,7 @@ export default {
         .removeOne({ _id: new ObjectId(args.eventId) });
       return result.deletedCount;
     },
+
     async setOrganisers(parent, args, ctx) {
       // Validate arguments
       const collectionsDb = ctx.db.collection("events");
@@ -69,6 +73,7 @@ export default {
       );
       return await collectionsDb.findOne({ _id: new ObjectId(eventId) });
     },
+
     async setAudiences(parent, args, ctx) {
       // Validate arguments
       const collectionsDb = ctx.db.collection("events");
@@ -87,6 +92,7 @@ export default {
       );
       return await collectionsDb.findOne({ _id: new ObjectId(eventId) });
     },
+
     async addCapability(parent, args, ctx) {
       // Validate arguments
       const { eventId, capabilityId } = args;
@@ -150,8 +156,35 @@ export default {
         .collection("events")
         .findOne({ _id: new ObjectId(eventId) });
     },
+
     async removeCapability(parent, args, ctx) {
       // Validate arguments
+      const { eventId, capabilityInstanceId } = args;
+      if (!eventId) throw new UserInputError("Event Id cannot be empty");
+      if (!capabilityInstanceId)
+        throw new UserInputError("Capability instance Id cannot be empty");
+
+      // Check that event exists
+      const eventCheck = await ctx.db
+        .collection("events")
+        .findOne({ _id: new ObjectId(eventId) });
+
+      if (!eventCheck)
+        return new ForbiddenError(
+          `The requested event "${eventId}" does not exist.`
+        );
+
+      // Remove the capability
+      await ctx.db.collection("events").update(
+        { _id: new ObjectId(eventId) },
+        {
+          $pull: { capabilities: { _id: new ObjectId(capabilityInstanceId) } }
+        }
+      );
+
+      return ctx.db
+        .collection("events")
+        .findOne({ _id: new ObjectId(eventId) });
     }
   }
 };
