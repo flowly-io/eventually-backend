@@ -7,7 +7,7 @@ import { createUsersLoader, createCapabilitiesLoader } from "./loaders";
 import { typeDefs, resolvers } from "./graphql";
 import { collectFields } from "./graphql/utils/graphqlOperationUtils";
 
-import mockData from "../mocks/generateMockData";
+import mockData from "./mocks/generateMockData";
 
 /**
  * Set this to `true` if you want to load mock data to the
