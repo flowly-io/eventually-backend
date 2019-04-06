@@ -90,3 +90,6 @@ lerna-debug.log
 # System Files
 .DS_Store
 Thumbs.db
+
+# Service accounts
+service-account.json

@@ -1,21 +1,27 @@
+import path from "path";
 import { gql } from "apollo-server";
 
-// Type definitions define the "shape" of your data and specify
-// which ways the data can be fetched from the GraphQL server.
-const typeDefs = gql`
-  # Comments in GraphQL are defined with the hash (#) symbol.
+import findFilesInDirectory from "../utils/findFilesInDirectory";
+import { constructSchemaFromFiles } from "../utils/loadGrahpQLSchema";
 
-  # This "Book" type can be used in other type declarations.
-  type Book {
-    title: String
-    author: String
-  }
+/**
+ * Generate the Type definitions for the server by
+ * stitching a schema together from .graphql files.
+ */
+const generateTypeDefs = () => {
+  // Load .graphql files from the `schemas` directory
+  const gqlFiles = findFilesInDirectory(
+    path.join(__dirname, "schemas"),
+    /\.graphql/
+  );
 
-  # The "Query" type is the root of all GraphQL queries.
-  # (A "Mutation" type will be covered later on.)
-  type Query {
-    books: [Book]
-  }
-`;
+  // Stitch each .graphql file together into a single schema string
+  const schema = constructSchemaFromFiles(gqlFiles);
+
+  return gql(schema);
+};
+
+// Generate type defs
+const typeDefs = generateTypeDefs();
 
 export { typeDefs };
