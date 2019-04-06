@@ -33,7 +33,7 @@ input EventInput {
 extend type Query {
   event(eventId: ID!): Event
   events: [Event]
-  eventsByUser(userId: ID!): [Event]
+  eventsByMe: [Event]
 }
 
 extend type Mutation {
