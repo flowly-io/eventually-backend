@@ -13,6 +13,7 @@ type CapabilityInstance {
 type Event {
   _id: ID!
   name: String!
+  description: String
   organisers: [User]
   audiences: [UserType]
   maxCapacity: Int
@@ -23,6 +24,7 @@ type Event {
 
 input EventInput {
   name: String!
+  description: String
   maxCapacity: Int
   startDateTime: String
   endDateTime: String
@@ -36,9 +38,9 @@ extend type Query {
 
 extend type Mutation {
   createEvent(event: EventInput!): Event
-  deleteEvent(eventId: ID!): Event
-  setOrganisers(eventId: ID!, userId: [ID!]!): Event
+  deleteEvent(eventId: ID!): Int
+  setOrganisers(eventId: ID!, organiserIds: [ID!]!): Event
   setAudiences(eventId: ID!, audiences: [UserType!]!): Event
   addCapability(eventId: ID!, capabilityId: ID!): Event
-  removeCapability(eventId: ID!, capabilityId: ID!): Event
+  removeCapability(eventId: ID!, capabilityInstanceId: ID!): Event
 }

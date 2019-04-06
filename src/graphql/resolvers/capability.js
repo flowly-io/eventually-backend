@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb";
-import { UserInputError } from "apollo-server";
+import { UserInputError, ForbiddenError } from "apollo-server";
 
 export default {
   Query: {
@@ -14,10 +14,22 @@ export default {
 
   Mutation: {
     async createCapability(parent, args, ctx) {
+      const { capability } = args;
+
+      // Check that capability has a unique name
+      const capabilityCheck = await ctx.db
+        .collection("capabilities")
+        .findOne({ name: capability.name });
+      if (capabilityCheck)
+        throw new ForbiddenError(
+          `A capability with the name "${capability.name}" already exists.`
+        );
+
+      // Create capability object
       const _id = new ObjectId();
       await ctx.db.collection("capabilities").insertOne({
         _id,
-        ...args.capability
+        ...capability
       });
       return await ctx.db.collection("capabilities").findOne({ _id });
     },
