@@ -1,0 +1,22 @@
+type Capability {
+  _id: ID!
+  name: String
+  description: String
+  checkpoints: [String]
+}
+
+input CapabilityInput {
+  name: String
+  description: String
+  checkpoints: [String]
+}
+
+extend type Query {
+  capability(capabilityId: ID!): Capability
+  capabilities: [Capability]
+}
+
+extend type Mutation {
+  createCapability(capability: CapabilityInput!): Capability
+  deleteCapability(capabilityId: ID!): Int
+}

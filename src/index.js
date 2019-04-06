@@ -19,7 +19,8 @@ const server = new ApolloServer({
     const userId = header;
 
     return { db, userId };
-  }
+  },
+  introspection: true
 });
 
 // Launch the server
