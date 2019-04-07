@@ -24,7 +24,7 @@ export default [
         type: "TodoCheckpoint"
       }
     ],
-    delegateGroupNames: ["catering"]
+    delegateGroupNames: ["catering", "staff"]
   },
   {
     _id: binsId,
@@ -71,6 +71,6 @@ export default [
         type: "TodoCheckpoint"
       }
     ],
-    delegateGroupNames: ["security", "staff"]
+    delegateGroupNames: ["security"]
   }
 ];
