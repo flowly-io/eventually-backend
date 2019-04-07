@@ -66,6 +66,7 @@ const server = new ApolloServer({
   },
   formatError(error) {
     console.log(error);
+    return error;
   },
 
   // FIXME: remove these in production as best practice
