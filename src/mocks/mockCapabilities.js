@@ -71,6 +71,6 @@ export default [
         type: "TodoCheckpoint"
       }
     ],
-    delegateGroupNames: []
+    delegateGroupNames: ["security", "staff"]
   }
 ];

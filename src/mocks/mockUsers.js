@@ -13,7 +13,7 @@ export default [
     lastname: "Jiang",
     userType: "STAFF",
     email: "Eric.Jiang@monash.edu",
-    groups: ["admins"]
+    groups: ["admins", "staff"]
   },
   {
     _id: NicholasId,
