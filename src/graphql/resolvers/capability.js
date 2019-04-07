@@ -30,6 +30,7 @@ export default {
       await ctx.db.collection("capabilities").insertOne({
         _id,
         ...capability,
+        checkpoints: [],
         delegateGroupNames: []
       });
       return await ctx.db.collection("capabilities").findOne({ _id });

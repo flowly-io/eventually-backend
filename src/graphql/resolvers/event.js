@@ -147,7 +147,7 @@ export default {
         name: capabilityCheck.name,
         description: capabilityCheck.description,
         checkpoints: capabilityCheck.checkpoints.map(c => ({
-          description: c,
+          description: c.description,
           done: false
         }))
       };
