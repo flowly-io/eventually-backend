@@ -31,7 +31,6 @@ export default [
     name: "Bins",
     description: "Rubbish disposal for your event",
     checkpoints: [
-      { description: "A sample non-todo checkpoint" },
       { description: "Find bins", done: false, type: "TodoCheckpoint" },
       {
         description: "Arrange disposal time",
@@ -62,11 +61,11 @@ export default [
   },
   {
     _id: consentId,
-    name: "Sexual Consent (Moodle)",
-    description: "Sexual Consent module",
+    name: "Alchocol RSA",
+    description: "License to serve alcohol at your event",
     checkpoints: [
       {
-        description: "All participants completed module",
+        description: "Ensure all event organisers have a valid RSA",
         done: false,
         type: "TodoCheckpoint"
       }
